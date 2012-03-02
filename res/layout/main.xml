@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/logo"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_weight="2"/>
+    
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/menu"
+    android:layout_weight="1"
+
+        >
+<Button 
+    android:id="@+id/writeTag"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Write Key to Tag"/>
+
+<Button 
+    android:id="@+id/addNote"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Add Note"/>
+
+<Button 
+    android:id="@+id/viewNotes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="View Notes"/>
+</LinearLayout>
+</LinearLayout>

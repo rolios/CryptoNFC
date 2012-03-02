@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.roly.nfc.crypto"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="10" />
+    <uses-permission android:name="android.permission.NFC"/>
+
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    
+    <application
+        android:icon="@drawable/icone"
+        android:label="@string/app_name" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".CryptoNFCActivity_" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="NoteEditer_"></activity>
+        <activity android:name="NoteList"></activity>
+        <provider android:name=".provider.NoteProvider"
+             android:authorities="com.roly.nfc.crypto.noteprovider"></provider>
+        <activity android:name=".nfc.TagWriter"></activity>
+        <activity android:name=".nfc.KeyPicker"></activity>
+        <activity android:name="UncipheredNote"></activity>
+    </application>
+
+</manifest>
