@@ -1,45 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
-    <ImageView 
-        android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background" >
+
+    <com.roly.nfc.crypto.utils.DashboardLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/adView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <Button
+            android:drawableTop="@drawable/write_key"
+            android:id="@+id/writeTag"
+            style="@style/DashboardButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:onClick="writeTag"
+            android:text="Write Key to Tag" />
+
+        <Button
+            android:drawableTop="@drawable/add_note"
+            android:id="@+id/addNote"
+            style="@style/DashboardButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addNote"
+            android:text="Add Note" />
+
+        <Button
+            android:drawableTop="@drawable/view_notes"
+            android:id="@+id/viewNotes"
+            style="@style/DashboardButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="viewNotes"
+            android:text="View Notes" />
+    </com.roly.nfc.crypto.utils.DashboardLayout>
+
+    <com.google.ads.AdView
+        android:id="@id/adView"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/logo"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_weight="2"/>
-    
-    
-    <LinearLayout 
-        android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/menu"
-    android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="a14f50d7f83fe8d"
+        android:gravity="center_horizontal"
+        ads:loadAdOnCreate="true"
+        ads:testDevices="TEST_EMULATOR" />
 
-        >
-<Button 
-    android:id="@+id/writeTag"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Write Key to Tag"/>
-
-<Button 
-    android:id="@+id/addNote"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Add Note"/>
-
-<Button 
-    android:id="@+id/viewNotes"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="View Notes"/>
-</LinearLayout>
-</LinearLayout>
+</RelativeLayout>

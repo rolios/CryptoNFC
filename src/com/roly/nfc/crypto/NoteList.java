@@ -35,7 +35,7 @@ public class NoteList extends ListActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 this.setTitle("Select the note you want to uncipher");
+		 this.setTitle("Select note for uncipher");
 		 Cursor mCursor = this.managedQuery(NoteProvider.CONTENT_URI, null, null, null, null);
 		 this.setListAdapter(new CustomAdapter(this,mCursor));
 		 

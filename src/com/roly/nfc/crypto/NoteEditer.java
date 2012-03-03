@@ -6,24 +6,27 @@ import javax.crypto.spec.SecretKeySpec;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ViewById;
 import com.roly.nfc.crypto.nfc.KeyPicker;
 import com.roly.nfc.crypto.provider.NoteDatabaseHelper;
 import com.roly.nfc.crypto.provider.NoteProvider;
 
-@EActivity(R.layout.note_editer)
 public class NoteEditer extends Activity{
 	
-	@ViewById
 	EditText title;
-	
-	@ViewById
+
 	EditText content;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		setContentView(R.layout.note_editer);
+		title = (EditText)findViewById(R.id.title);
+		content = (EditText)findViewById(R.id.content);
+		super.onCreate(savedInstanceState);
+	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -39,7 +42,7 @@ public class NoteEditer extends Activity{
 			mContent = crypter.encrypt(mContent);
 			values.put(NoteDatabaseHelper.KEY_BODY, mContent);
 			getContentResolver().insert(NoteProvider.CONTENT_URI, values);
-			setResult(CryptoNFCActivity_.NOTE_VALIDATED);
+			setResult(CryptoNFCActivity.NOTE_VALIDATED);
 			finish();
 			break;
 
@@ -48,8 +51,7 @@ public class NoteEditer extends Activity{
 		}
 	}
 	
-	@Click
-	void saveNote(){
+	public void saveNote(View v){
 		if(title.getText().length()<0)
 			Toast.makeText(this, "Invalid title!", 10).show();
 		else if(content.getText().length()<0)

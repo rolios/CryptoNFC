@@ -3,6 +3,8 @@ package com.roly.nfc.crypto.nfc;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import com.roly.nfc.crypto.CryptoNFCActivity;
+
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -10,7 +12,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 
-import com.roly.nfc.crypto.CryptoNFCActivity_;
 
 public class TagWriter extends AbstractTagHandler{
 
@@ -56,7 +57,7 @@ public class TagWriter extends AbstractTagHandler{
     		ndef.connect();
     		ndef.writeNdefMessage(message);
     		ndef.close();
-    		setResult(CryptoNFCActivity_.TAG_VALIDATED);
+    		setResult(CryptoNFCActivity.TAG_VALIDATED);
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
