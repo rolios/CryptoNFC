@@ -1,7 +1,5 @@
 package com.roly.nfc.crypto;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
 import com.roly.nfc.crypto.nfc.TagWriter;
 
 import android.app.Activity;
@@ -20,8 +18,6 @@ public class CryptoNFCActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		AdView adView = (AdView)this.findViewById(R.id.adView);
-		adView.loadAd(new AdRequest());
 	}
 
 
