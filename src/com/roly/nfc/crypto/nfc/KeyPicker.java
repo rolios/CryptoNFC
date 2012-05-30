@@ -1,10 +1,14 @@
 package com.roly.nfc.crypto.nfc;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Parcelable;
+import android.os.PatternMatcher;
 
 
 public class KeyPicker extends AbstractTagHandler{
@@ -29,7 +33,7 @@ public class KeyPicker extends AbstractTagHandler{
 		
 		Intent data = new Intent();
 		data.putExtra("key", key);
-
+		
 		setResult(KEY_RETRIEVED, data);
 		finish();
 		
@@ -84,6 +88,30 @@ public class KeyPicker extends AbstractTagHandler{
         }
 		
 		return messages;
+	}
+
+	@Override
+	protected void setForegroundListener() {
+        pi = PendingIntent.getActivity(this, 0, new Intent(this,getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);     
+       	IntentFilter old_ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);  
+        try{
+        	old_ndef.addDataType("*/*");
+        }catch (MalformedMimeTypeException e) {
+			e.printStackTrace();
+		}
+        
+		IntentFilter old_ndef2 = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED); 
+		old_ndef2.addDataScheme("vnd.android.nfc");
+		old_ndef2.addDataAuthority("ext", null);
+		old_ndef2.addDataPath("/CryptoNFCKey",PatternMatcher.PATTERN_PREFIX);
+        
+		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED); 
+		old_ndef2.addDataScheme("vnd.android.nfc");
+		old_ndef2.addDataAuthority("ext", null);
+		old_ndef2.addDataPath("/r0ly.fr:CryptoNFCKey",PatternMatcher.PATTERN_PREFIX);
+        
+        intentFiltersArray = new IntentFilter[] {old_ndef2, old_ndef, ndef};     
+        techList = null;
 	}
     
 }

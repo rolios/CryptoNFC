@@ -37,3 +37,6 @@ bin/*
 dist/*
 gen/*
 .apt_generated/*
+.classpath
+.directory
+.gitignore

@@ -5,12 +5,18 @@ import javax.crypto.SecretKey;
 
 import com.roly.nfc.crypto.CryptoNFCActivity;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.nfc.tech.NfcA;
+import android.nfc.tech.NfcB;
+import android.nfc.tech.NfcF;
+import android.nfc.tech.NfcV;
+import android.os.Build;
 
 
 public class TagWriter extends AbstractTagHandler{
@@ -24,10 +30,7 @@ public class TagWriter extends AbstractTagHandler{
     	data[0] = (byte) status;
  
     	System.arraycopy(key, 0, data, 1, key.length);
-    	// On retourne le NdefRecord avec les informations sur le contenu enregistré
-    	//Log.d("ROLY", "Payload before: " + byteArrayToHexString(data));
-    	//Log.d("ROLY", "length before: "+ key.length);
-    	return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], data);
+    	return new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE, "r0ly.fr:CryptoNFCKey".getBytes(), new byte[0], data);
     }
 
 //    static String byteArrayToHexString(byte[] bArray){
@@ -48,7 +51,10 @@ public class TagWriter extends AbstractTagHandler{
 		try{
 			SecretKey key = KeyGenerator.getInstance("DES").generateKey();
 			//Log.d("ROLY", key.getEncoded().toString());
-    		NdefRecord[] records = {createRecord(key.getEncoded())};
+    		NdefRecord[] records = new NdefRecord[2];
+    		records[0] = createRecord(key.getEncoded());
+    		if(Build.VERSION_CODES.ICE_CREAM_SANDWICH <= Build.VERSION.SDK_INT)
+    			records[1] = NdefRecord.createApplicationRecord("com.roly.nfc.crypto");
     		// On instancie un NdefMessage avec le NdefRecord que l'on vient de créer
     		NdefMessage message = new NdefMessage(records);
     		
@@ -63,5 +69,16 @@ public class TagWriter extends AbstractTagHandler{
 		}finally{
 			finish();
 		}
+	}
+
+	@Override
+	protected void setForegroundListener() {
+        pi = PendingIntent.getActivity(this, 0, new Intent(this,getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);     
+
+        intentFiltersArray = null;     
+        techList = new String[][]{ new String[]{ NfcA.class.getName(),Ndef.class.getName()},
+				new String[]{ NfcB.class.getName(),Ndef.class.getName()},
+				new String[]{ NfcF.class.getName(),Ndef.class.getName()},
+				new String[]{ NfcV.class.getName(),Ndef.class.getName()}};
 	}
 }

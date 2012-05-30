@@ -53,9 +53,9 @@ public class NoteEditer extends Activity{
 	
 	public void saveNote(View v){
 		if(title.getText().length()<0)
-			Toast.makeText(this, "Invalid title!", 10).show();
+			Toast.makeText(this, "Invalid title!", Toast.LENGTH_LONG).show();
 		else if(content.getText().length()<0)
-			Toast.makeText(this, "Invalid content!", 10).show();
+			Toast.makeText(this, "Invalid content!", Toast.LENGTH_LONG).show();
 		else{
 			Intent i = new Intent(this, KeyPicker.class);
 			startActivityForResult(i, KeyPicker.KEY_RETRIEVED);
