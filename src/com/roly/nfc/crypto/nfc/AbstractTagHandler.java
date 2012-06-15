@@ -1,5 +1,7 @@
 package com.roly.nfc.crypto.nfc;
 
+import java.util.Arrays;
+
 import com.roly.nfc.crypto.R;
 
 import android.app.Activity;
@@ -7,7 +9,11 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
+import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public abstract class AbstractTagHandler extends Activity{
 
@@ -16,9 +22,13 @@ public abstract class AbstractTagHandler extends Activity{
 	protected PendingIntent pi;
 	protected IntentFilter old_ndef2;
 	protected NfcAdapter adapter;
+	private boolean formatNeeded=false;
 	
-	
-    @Override
+    public boolean isFormatNeeded() {
+		return formatNeeded;
+	}
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.tag_handler);
@@ -40,14 +50,22 @@ public abstract class AbstractTagHandler extends Activity{
     	super.onPause();
     	adapter.disableForegroundDispatch(this);
     }
-    
-    
-    
+   
     @Override
     protected void onNewIntent(Intent intent) {
     	super.onNewIntent(intent);
     	if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED) || intent.getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)){
-    		action(intent);
+			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			String[] tagTechs = tag.getTechList();
+			if(Arrays.asList(tagTechs).contains(Ndef.class.getName())){
+				formatNeeded=false;
+				action(intent);
+			}else if(Arrays.asList(tagTechs).contains(NdefFormatable.class.getName())){
+				formatNeeded=true;
+				action(intent);
+			}else{
+				Toast.makeText(this, "Tag not supported", Toast.LENGTH_LONG).show();
+			}
 		}
     }  
  

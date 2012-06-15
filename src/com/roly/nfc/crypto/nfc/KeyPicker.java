@@ -39,16 +39,6 @@ public class KeyPicker extends AbstractTagHandler{
 		
 	}
 	
-//    public static String byteArrayToHexString(byte[] bArray){
-//        StringBuffer buffer = new StringBuffer();
-//     
-//        for(byte b : bArray) {
-//          buffer.append(Integer.toHexString(b));
-//          buffer.append(" ");
-//        }
-//     
-//        return buffer.toString().toUpperCase();    
-//      }
     
 //
 //	Récupère la liste des NdefRecords contenus dans chaque NdefMessages

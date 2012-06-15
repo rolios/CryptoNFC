@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<PreferenceCategory 
+	    android:title="NFC">
+	    <CheckBoxPreference
+	        android:key="format_ndef_formatable_tags"
+	        android:title="Format NFC Tags"
+	        android:summary="Handle and format tags when possible. Checked by default"
+	        android:defaultValue="true"/>
+	</PreferenceCategory>    
+</PreferenceScreen>
