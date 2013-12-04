@@ -1,7 +1,5 @@
 package com.roly.nfc.crypto;
 
-import com.roly.nfc.crypto.nfc.TagWriter;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.roly.nfc.crypto.nfc.TagWriter;
 
-public class CryptoNFCActivity extends Activity {
 
+public class CryptoNFCHomeActivity extends Activity {
+
+	public static final int TAG_ERROR=-2;
+	public static final int NOTE_ERROR=-1;
 	public static final int NOTE_VALIDATED=1;
 	public static final int TAG_VALIDATED=2;
 
@@ -68,10 +70,16 @@ public class CryptoNFCActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
 		case NOTE_VALIDATED:
-			Toast.makeText(this,"Note saved", 10).show();
+			Toast.makeText(this,"Note saved", Toast.LENGTH_SHORT).show();
 			break;
 		case TAG_VALIDATED:
-			Toast.makeText(this,"Tag written", 10).show();
+			Toast.makeText(this,"Tag written", Toast.LENGTH_SHORT).show();
+			break;
+		case TAG_ERROR:
+			Toast.makeText(this, "An error occured while writing key on tag", Toast.LENGTH_SHORT).show();
+			break;
+		case NOTE_ERROR:
+			Toast.makeText(this, "An error occured while saving note", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
