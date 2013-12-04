@@ -1,5 +1,5 @@
 
-package com.roly.nfc.crypto.provider;
+package com.roly.nfc.crypto.data;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -40,7 +40,7 @@ public class NoteProvider extends ContentProvider{
 	
 	@Override
 	public boolean onCreate() {
-		NoteDatabaseHelper helper = new NoteDatabaseHelper(getContext());
+		NoteDatabase helper = new NoteDatabase(getContext());
 		notesDB = helper.getWritableDatabase();
 		return notesDB != null;
 	}
@@ -50,12 +50,12 @@ public class NoteProvider extends ContentProvider{
 			String[] selectionArgs, String sortOrder) {
 		
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-		qb.setTables(NoteDatabaseHelper.DATABASE_TABLE);
+		qb.setTables(NoteDatabase.DATABASE_TABLE);
 
 		// If this is a row query, limit the result set to the passed in row.
 		switch (uriMatcher.match(uri)) {
 		case NOTE_ID:
-			qb.appendWhere(NoteDatabaseHelper.KEY_ID + "=" + uri.getPathSegments().get(1));
+			qb.appendWhere(NoteDatabase.KEY_ID + "=" + uri.getPathSegments().get(1));
 			break;
 		case ALL_NOTES:
 			break;
@@ -80,7 +80,7 @@ public class NoteProvider extends ContentProvider{
 	public Uri insert(Uri uri, ContentValues values) {
 		// Insert the new row, will return the row number if
 		// successful.
-		long rowID = notesDB.insert(NoteDatabaseHelper.DATABASE_TABLE, "note", values);
+		long rowID = notesDB.insert(NoteDatabase.DATABASE_TABLE, "note", values);
 
 		// Return a URI to the newly inserted row on success.
 		if (rowID > 0) {
@@ -98,18 +98,18 @@ public class NoteProvider extends ContentProvider{
 		int count;
 		switch (uriMatcher.match(uri)) {
 		case ALL_NOTES:
-			count = notesDB.delete(NoteDatabaseHelper.DATABASE_TABLE, selection, selectionArgs);
+			count = notesDB.delete(NoteDatabase.DATABASE_TABLE, selection, selectionArgs);
 			break;
 
 		case NOTE_ID:
 			String segment = uri.getPathSegments().get(1);
-			StringBuilder whereClause = new StringBuilder(NoteDatabaseHelper.KEY_ID).append("=")
+			StringBuilder whereClause = new StringBuilder(NoteDatabase.KEY_ID).append("=")
 					.append(segment);
 			if (!TextUtils.isEmpty(selection)) {
 				whereClause.append(" AND (").append(selection).append(")");
 			}
 
-			count = notesDB.delete(NoteDatabaseHelper.DATABASE_TABLE, whereClause.toString(),
+			count = notesDB.delete(NoteDatabase.DATABASE_TABLE, whereClause.toString(),
 					selectionArgs);
 			break;
 
@@ -129,17 +129,17 @@ public class NoteProvider extends ContentProvider{
 		int count;
 		switch (uriMatcher.match(uri)) {
 		case ALL_NOTES:
-			count = notesDB.update(NoteDatabaseHelper.DATABASE_TABLE, values, selection, selectionArgs);
+			count = notesDB.update(NoteDatabase.DATABASE_TABLE, values, selection, selectionArgs);
 			break;
 
 		case NOTE_ID:
 			String segment = uri.getPathSegments().get(1);
-			StringBuilder whereClause = new StringBuilder(NoteDatabaseHelper.KEY_ID).append("=")
+			StringBuilder whereClause = new StringBuilder(NoteDatabase.KEY_ID).append("=")
 					.append(segment);
 			if (!TextUtils.isEmpty(selection)) {
 				whereClause.append(" AND (").append(selection).append(")");
 			}
-			count = notesDB.update(NoteDatabaseHelper.DATABASE_TABLE, values,
+			count = notesDB.update(NoteDatabase.DATABASE_TABLE, values,
 					whereClause.toString(), selectionArgs);
 			break;
 

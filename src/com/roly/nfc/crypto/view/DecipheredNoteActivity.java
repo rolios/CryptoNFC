@@ -1,11 +1,12 @@
-package com.roly.nfc.crypto;
+package com.roly.nfc.crypto.view;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.roly.nfc.crypto.R;
 
-public class DecipheredNote extends Activity {
+public class DecipheredNoteActivity extends Activity {
 
 	TextView title_details;
 	TextView content_details;

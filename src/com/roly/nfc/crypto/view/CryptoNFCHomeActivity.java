@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto;
+package com.roly.nfc.crypto.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.roly.nfc.crypto.nfc.TagWriter;
-
+import com.roly.nfc.crypto.R;
+import com.roly.nfc.crypto.view.nfc.TagWriterActivity;
 
 public class CryptoNFCHomeActivity extends Activity {
 
@@ -48,19 +48,19 @@ public class CryptoNFCHomeActivity extends Activity {
 	}
 	
 	public void addNote(View v){
-		Intent i = new Intent(this,NoteEditer.class);
+		Intent i = new Intent(this,EditNoteActivity.class);
 		startActivityForResult(i, NOTE_VALIDATED);
 	}
 
 
 	public void viewNotes(View v){
-		Intent i = new Intent(this,NoteList.class);
+		Intent i = new Intent(this,NoteListActivity.class);
 		startActivity(i);
 	}
 
 
 	public void writeTag(View v){
-		Intent i = new Intent(this,TagWriter.class);
+		Intent i = new Intent(this,TagWriterActivity.class);
 		startActivityForResult(i, NOTE_VALIDATED);
 	}
 

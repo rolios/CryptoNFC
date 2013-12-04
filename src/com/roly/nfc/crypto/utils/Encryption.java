@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto;
+package com.roly.nfc.crypto.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;

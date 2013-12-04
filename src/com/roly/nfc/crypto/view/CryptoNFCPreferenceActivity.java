@@ -1,7 +1,9 @@
-package com.roly.nfc.crypto;
+package com.roly.nfc.crypto.view;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
+import com.roly.nfc.crypto.R;
 
 public class CryptoNFCPreferenceActivity extends PreferenceActivity {
 

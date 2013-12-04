@@ -1,11 +1,11 @@
-package com.roly.nfc.crypto.provider;
+package com.roly.nfc.crypto.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class NoteDatabaseHelper extends SQLiteOpenHelper {
+public class NoteDatabase extends SQLiteOpenHelper {
 	
 	// column names
 	public static final String KEY_ID = "_id";
@@ -24,7 +24,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_CREATE = String.format("create table %s (%s integer primary key autoincrement, %s text not null, %s text not null);",
 			DATABASE_TABLE, KEY_ID, KEY_TITLE, KEY_BODY);
 	
-	public NoteDatabaseHelper(Context context) {
+	public NoteDatabase(Context context) {
 		super(context,DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	

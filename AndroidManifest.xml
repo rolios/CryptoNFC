@@ -16,7 +16,7 @@
             android:icon="@drawable/logo"
             android:label="@string/app_name" >
         <activity
-                android:name=".CryptoNFCHomeActivity"
+                android:name=".view.CryptoNFCHomeActivity"
                 android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,23 +24,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="NoteEditer" >
+        <activity android:name=".view.EditNoteActivity" >
         </activity>
-        <activity android:name="NoteList" >
+        <activity android:name=".view.NoteListActivity" >
         </activity>
 
         <provider
-                android:name=".provider.NoteProvider"
+                android:name=".data.NoteProvider"
                 android:authorities="com.roly.nfc.crypto.noteprovider" >
         </provider>
 
-        <activity android:name=".nfc.TagWriter" >
+        <activity android:name=".view.nfc.TagWriterActivity" >
         </activity>
-        <activity android:name=".CryptoNFCPreferenceActivity" >
+        <activity android:name=".view.CryptoNFCPreferenceActivity" >
         </activity>
-        <activity android:name=".nfc.KeyPicker" >
+        <activity android:name=".view.nfc.KeyPickerActivity" >
         </activity>
-        <activity android:name=".DecipheredNote" >
+        <activity android:name=".view.DecipheredNoteActivity" >
         </activity>
     </application>
 

@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">CryptoNFC</string>
+    
+    <string name="crash_toast_text">An error occured in CryptoNFC application. Sorry about that, a report should have been sent in order to fix these issues.</string>
 
 </resources>

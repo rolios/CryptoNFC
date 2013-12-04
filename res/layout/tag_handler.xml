@@ -5,17 +5,13 @@
     android:orientation="vertical"
     android:gravity="center" >
 
-    <ImageView 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/logo"/>
     <TextView 
         android:text="approach the NFC tag close to your phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textStyle="bold"
+        android:drawableTop="@drawable/logo"
         />
     
 </LinearLayout>
