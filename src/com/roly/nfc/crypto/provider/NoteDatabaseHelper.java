@@ -22,7 +22,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 	protected static final int DATABASE_VERSION = 1;
 	
 	private static final String DATABASE_CREATE = String.format("create table %s (%s integer primary key autoincrement, %s text not null, %s text not null);",
-			DATABASE_TABLE, KEY_ID, KEY_TITLE, KEY_BODY);;
+			DATABASE_TABLE, KEY_ID, KEY_TITLE, KEY_BODY);
 	
 	public NoteDatabaseHelper(Context context) {
 		super(context,DATABASE_NAME, null, DATABASE_VERSION);

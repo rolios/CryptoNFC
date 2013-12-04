@@ -1,6 +1,8 @@
+
 package com.roly.nfc.crypto.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -67,7 +69,8 @@ public class NoteProvider extends ContentProvider{
 
 		// Register the contexts ContentResolver to be notified if
 		// the cursor result set changes.
-		c.setNotificationUri(getContext().getContentResolver(), uri);
+        ContentResolver contentResolver = getContext().getContentResolver();
+        c.setNotificationUri(contentResolver, uri);
 
 		// Return a cursor to the query result.
 		return c;
@@ -82,7 +85,8 @@ public class NoteProvider extends ContentProvider{
 		// Return a URI to the newly inserted row on success.
 		if (rowID > 0) {
 			Uri newUri = ContentUris.withAppendedId(CONTENT_URI, rowID);
-			getContext().getContentResolver().notifyChange(newUri, null);
+            ContentResolver contentResolver = getContext().getContentResolver();
+            contentResolver.notifyChange(newUri, null);
 			return newUri;
 		}
 		throw new SQLException("Failed to insert row into " + uri);
@@ -113,7 +117,8 @@ public class NoteProvider extends ContentProvider{
 			throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
 
-		getContext().getContentResolver().notifyChange(uri, null);
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.notifyChange(uri, null);
 		return count;
 	}
 
@@ -142,7 +147,8 @@ public class NoteProvider extends ContentProvider{
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
 
-		getContext().getContentResolver().notifyChange(uri, null);
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.notifyChange(uri, null);
 		return count;
 	}
 
