@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 
-public class UncipheredNote extends Activity {
-
+public class DecipheredNote extends Activity {
 
 	TextView title_details;
 	TextView content_details;
@@ -21,7 +20,7 @@ public class UncipheredNote extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if(extras!=null){
 			title_details.setText(extras.getString("title"));
-			content_details.setText(extras.getString("content"));;
+			content_details.setText(extras.getString("content"));
 		}else 
 			finish();
 	}
