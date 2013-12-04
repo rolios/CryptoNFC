@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
-import com.roly.nfc.crypto.utils.Encryption;
+import com.roly.nfc.crypto.util.EncryptionUtils;
 import com.roly.nfc.crypto.view.nfc.KeyPickerActivity;
 
 public class NoteListActivity extends ListActivity{
@@ -92,7 +92,7 @@ public class NoteListActivity extends ListActivity{
 			String title = cursor.getString(NoteDatabase.TITLE_COLUMN);
 
 			try{
-				content = Encryption.decrypt(key, content);
+				content = EncryptionUtils.decrypt(key, content);
 			}catch(Exception e){
 				Toast.makeText(this, "This is not the right tagkey. Can't decipher this note.", Toast.LENGTH_LONG).show();
 				return;

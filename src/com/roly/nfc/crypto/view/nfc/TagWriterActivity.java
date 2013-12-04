@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.roly.nfc.crypto.R;
+import com.roly.nfc.crypto.util.NfcUtils;
 import com.roly.nfc.crypto.view.CryptoNFCHomeActivity;
 
 public class TagWriterActivity extends Activity {
@@ -35,19 +36,15 @@ public class TagWriterActivity extends Activity {
     private IntentFilter[] intentFiltersArray;
     private String[][] techList;
     private PendingIntent pi;
-    private IntentFilter old_ndef2;
     private NfcAdapter adapter;
     private boolean formatNeeded=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.tag_handler);
-
+        setContentView(R.layout.tag_handler);
         adapter = NfcAdapter.getDefaultAdapter(this);
-
         setForegroundListener();
-
     }
 
     @Override
@@ -70,29 +67,17 @@ public class TagWriterActivity extends Activity {
             String[] tagTechs = tag.getTechList();
             if(Arrays.asList(tagTechs).contains(Ndef.class.getName())){
                 formatNeeded=false;
-                action(intent);
+                handle(intent);
             }else if(Arrays.asList(tagTechs).contains(NdefFormatable.class.getName())){
                 formatNeeded=true;
-                action(intent);
+                handle(intent);
             }else{
                 Toast.makeText(this, "Tag not supported", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-
-    NdefRecord createRecord(byte[] key)
-	{
-		char status = (char) (key.length);
-		// data correspond au futur payload
-		byte[] data = new byte[1 + key.length];
-		data[0] = (byte) status;
-
-		System.arraycopy(key, 0, data, 1, key.length);
-		return new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE, "r0ly.fr:CryptoNFCKey".getBytes(), new byte[0], data);
-	}
-
-	protected void action(Intent i) {
+    private void handle(Intent i) {
 		// On a besoin ici d'une référence du tag détecté
 		Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 		SecretKey key;
@@ -104,7 +89,7 @@ public class TagWriterActivity extends Activity {
 		}
 
 		NdefRecord[] records = new NdefRecord[2];
-		records[0] = createRecord(key.getEncoded());
+		records[0] = NfcUtils.createRecord(key.getEncoded());
 		if(Build.VERSION_CODES.ICE_CREAM_SANDWICH <= Build.VERSION.SDK_INT)
 			records[1] = NdefRecord.createApplicationRecord("com.roly.nfc.crypto");
 
@@ -117,13 +102,10 @@ public class TagWriterActivity extends Activity {
 			try {
 				formatable.connect();
 				formatable.format(message);
-			} catch (IOException e) {
+			} catch (IOException | FormatException e) {
 				finishOnError(e);
 				return;
-			} catch (FormatException e) {
-				finishOnError(e);
-				return;
-			}finally{
+			} finally{
 				try {
 					formatable.close();
 				} catch (IOException e) {
@@ -136,13 +118,9 @@ public class TagWriterActivity extends Activity {
 			try {
 				ndef.connect();
 				ndef.writeNdefMessage(message);
-			} catch (IOException e) {
+			} catch (IOException | FormatException e) {
 				finishOnError(e);
-				return;
-			} catch (FormatException e) {
-				finishOnError(e);
-				return;
-			}finally{
+            } finally{
 				try {
 					ndef.close();
 				} catch (IOException e) {

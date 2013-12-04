@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
-import com.roly.nfc.crypto.utils.Encryption;
+import com.roly.nfc.crypto.util.EncryptionUtils;
 import com.roly.nfc.crypto.view.nfc.KeyPickerActivity;
 
 public class EditNoteActivity extends Activity{
@@ -41,7 +41,7 @@ public class EditNoteActivity extends Activity{
 			String content = mContent.getText().toString();
 			
 			try {
-				content = Encryption.encrypt(key, content);
+				content = EncryptionUtils.encrypt(key, content);
 			} catch (Exception e) {
 				setResult(CryptoNFCHomeActivity.NOTE_ERROR);
 				finish();

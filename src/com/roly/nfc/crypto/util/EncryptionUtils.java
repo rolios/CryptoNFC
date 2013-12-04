@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.utils;
+package com.roly.nfc.crypto.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -12,7 +12,7 @@ import javax.crypto.SecretKey;
 
 import android.util.Base64;
 
-public class Encryption {
+public class EncryptionUtils {
 
     public static String encrypt(SecretKey key, String stringToEncrypt) throws BadPaddingException,
             IllegalBlockSizeException,

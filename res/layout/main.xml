@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background" >
 
-    <com.roly.nfc.crypto.utils.DashboardLayout
+    <com.roly.nfc.crypto.util.DashboardLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
@@ -37,6 +37,6 @@
             android:layout_height="wrap_content"
             android:onClick="viewNotes"
             android:text="View Notes" />
-    </com.roly.nfc.crypto.utils.DashboardLayout>
+    </com.roly.nfc.crypto.util.DashboardLayout>
 
 </RelativeLayout>

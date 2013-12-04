@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.utils;
+package com.roly.nfc.crypto.util;
 
 import android.content.Context;
 import android.util.AttributeSet;
