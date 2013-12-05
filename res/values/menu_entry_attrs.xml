@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="menu_entry">
+        <attr name="imageSrc" format="reference" localization="suggested"/>
+        <attr name="backgroundColor" format="color" localization="suggested"/>
+        <attr name="label" format="string" localization="suggested"/>
+    </declare-styleable>
+
+</resources>

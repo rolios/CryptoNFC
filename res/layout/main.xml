@@ -1,42 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/background" >
-
-    <com.roly.nfc.crypto.util.DashboardLayout
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res/com.roly.nfc.crypto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:orientation="vertical"
+        android:background="#000"
+        >
 
-        <Button
-            android:drawableTop="@drawable/write_key"
-            android:id="@+id/writeTag"
-            style="@style/DashboardButton"
+    <com.roly.nfc.crypto.view.MenuEntry
+            android:id="@+id/menu_list_notes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:onClick="writeTag"
-            android:text="Write Key to Tag" />
+            android:layout_height="0dp"
+            android:layout_weight=".45"
+            android:paddingBottom="5dp"
+            custom:label="View notes"
+            custom:imageSrc="@drawable/view_notes"
+            custom:backgroundColor="#0F0"
+            />
 
-        <Button
-            android:drawableTop="@drawable/add_note"
-            android:id="@+id/addNote"
-            style="@style/DashboardButton"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="addNote"
-            android:text="Add Note" />
+            android:layout_height="0dp"
+            android:layout_weight=".25"
+            android:orientation="horizontal">
 
-        <Button
-            android:drawableTop="@drawable/view_notes"
-            android:id="@+id/viewNotes"
-            style="@style/DashboardButton"
+        <com.roly.nfc.crypto.view.MenuEntry
+                android:id="@+id/menu_write_key"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".55"
+                custom:label="New key"
+                custom:imageSrc="@drawable/write_key"
+                custom:backgroundColor="#F00"
+                android:paddingRight="2dp"
+                />
+
+        <com.roly.nfc.crypto.view.MenuEntry
+                android:id="@+id/menu_source_code"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".45"
+                android:paddingLeft="2dp"
+                custom:label="Get code!"
+                custom:imageSrc="@drawable/write_key"
+                custom:backgroundColor="#00F"
+                />
+
+    </LinearLayout>
+
+    <com.roly.nfc.crypto.view.MenuEntry
+            android:id="@+id/menu_add_note"
+            android:paddingTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="viewNotes"
-            android:text="View Notes" />
-    </com.roly.nfc.crypto.util.DashboardLayout>
+            android:layout_height="0dp"
+            android:layout_weight=".30"
+            custom:label="Add Note"
+            custom:imageSrc="@drawable/add_note"
+            custom:backgroundColor="#FF0"
+            />
 
-</RelativeLayout>
+
+    <!-- <Button
+             android:drawableTop="@drawable/view_notes"
+             android:id="@+id/viewNotes"
+             style="@style/DashboardButton"
+             grid:layout_gravity="fill"
+             grid:layout_columnSpan="4"
+             android:onClick="viewNotes"
+             android:text="View Notes" />
+
+
+     <Button
+             android:drawableTop="@drawable/write_key"
+             android:id="@+id/writeTag"
+             style="@style/DashboardButton"
+             grid:layout_columnSpan="2"
+             android:onClick="writeTag"
+             grid:layout_gravity="fill"
+             android:text="Write Key to Tag" />
+
+
+     <Button
+             android:drawableTop="@drawable/add_note"
+             android:id="@+id/addNote"
+             style="@style/DashboardButton"
+             grid:layout_gravity="fill"
+             grid:layout_columnSpan="2"
+             android:onClick="addNote"
+             android:text="Add Note" />
+
+     <Button
+             android:drawableTop="@drawable/view_notes"
+             android:id="@+id/viewNotes"
+             style="@style/DashboardButton"
+             grid:layout_gravity="fill"
+             grid:layout_columnSpan="4"
+             android:onClick="viewNotes"
+             android:text="View Notes" />-->
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.roly.nfc.crypto.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +24,36 @@ public class CryptoNFCHomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-	}
+        View add = findViewById(R.id.menu_add_note);
+        View newKey = findViewById(R.id.menu_write_key);
+        View listNotes = findViewById(R.id.menu_list_notes);
+        View sourceCode = findViewById(R.id.menu_source_code);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNote();
+            }
+        });
+        listNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewNotes();
+            }
+        });
+        newKey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                writeTag();
+            }
+        });
+        sourceCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/OlivierGonthier/"));
+                startActivity(intent);
+            }
+        });
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,19 +77,19 @@ public class CryptoNFCHomeActivity extends Activity {
 		startActivity(new Intent(this,CryptoNFCPreferenceActivity.class));
 	}
 	
-	public void addNote(View v){
+	public void addNote(){
 		Intent i = new Intent(this,EditNoteActivity.class);
 		startActivityForResult(i, NOTE_VALIDATED);
 	}
 
 
-	public void viewNotes(View v){
+	public void viewNotes(){
 		Intent i = new Intent(this,NoteListActivity.class);
 		startActivity(i);
 	}
 
 
-	public void writeTag(View v){
+	public void writeTag(){
 		Intent i = new Intent(this,TagWriterActivity.class);
 		startActivityForResult(i, NOTE_VALIDATED);
 	}
