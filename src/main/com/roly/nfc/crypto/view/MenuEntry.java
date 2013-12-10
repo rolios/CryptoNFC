@@ -2,9 +2,13 @@ package com.roly.nfc.crypto.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,15 +32,28 @@ public class MenuEntry extends FrameLayout{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.menu_entry, this, true);
 
-        View frame = view.findViewById(R.id.menu_entry_frame);
-        frame.setBackgroundColor(background);
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        ColorDrawable colorPressed = new ColorDrawable(Color.parseColor("#2c3e50"));
+        stateListDrawable.addState(new int[]{android.R.attr.state_focused}, colorPressed);
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, colorPressed);
+        stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(background));
+
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            setBackgroundDrawable(stateListDrawable);
+        } else {
+            setBackground(stateListDrawable);
+        }
 
         ImageView image = (ImageView) view.findViewById(R.id.menu_entry_image);
         image.setImageDrawable(drawable);
 
         TextView label = (TextView) view.findViewById(R.id.menu_entry_label);
         label.setText(text);
-
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return true;
+    }
 }
