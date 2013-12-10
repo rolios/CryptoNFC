@@ -15,8 +15,8 @@
             android:layout_weight=".45"
             android:paddingBottom="5dp"
             custom:label="View notes"
-            custom:imageSrc="@drawable/view_notes"
-            custom:backgroundColor="#0F0"
+            custom:imageSrc="@drawable/notelist"
+            custom:backgroundColor="#3498db"
             />
 
     <LinearLayout
@@ -31,8 +31,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".55"
                 custom:label="New key"
-                custom:imageSrc="@drawable/write_key"
-                custom:backgroundColor="#F00"
+                custom:imageSrc="@drawable/tag"
+                custom:backgroundColor="#e74c3c"
                 android:paddingRight="2dp"
                 />
 
@@ -43,8 +43,8 @@
                 android:layout_weight=".45"
                 android:paddingLeft="2dp"
                 custom:label="Get code!"
-                custom:imageSrc="@drawable/write_key"
-                custom:backgroundColor="#00F"
+                custom:imageSrc="@drawable/code"
+                custom:backgroundColor="#27ae60"
                 />
 
     </LinearLayout>
@@ -56,47 +56,8 @@
             android:layout_height="0dp"
             android:layout_weight=".30"
             custom:label="Add Note"
-            custom:imageSrc="@drawable/add_note"
-            custom:backgroundColor="#FF0"
+            custom:imageSrc="@drawable/addnote"
+            custom:backgroundColor="#e67e22"
             />
-
-
-    <!-- <Button
-             android:drawableTop="@drawable/view_notes"
-             android:id="@+id/viewNotes"
-             style="@style/DashboardButton"
-             grid:layout_gravity="fill"
-             grid:layout_columnSpan="4"
-             android:onClick="viewNotes"
-             android:text="View Notes" />
-
-
-     <Button
-             android:drawableTop="@drawable/write_key"
-             android:id="@+id/writeTag"
-             style="@style/DashboardButton"
-             grid:layout_columnSpan="2"
-             android:onClick="writeTag"
-             grid:layout_gravity="fill"
-             android:text="Write Key to Tag" />
-
-
-     <Button
-             android:drawableTop="@drawable/add_note"
-             android:id="@+id/addNote"
-             style="@style/DashboardButton"
-             grid:layout_gravity="fill"
-             grid:layout_columnSpan="2"
-             android:onClick="addNote"
-             android:text="Add Note" />
-
-     <Button
-             android:drawableTop="@drawable/view_notes"
-             android:id="@+id/viewNotes"
-             style="@style/DashboardButton"
-             grid:layout_gravity="fill"
-             grid:layout_columnSpan="4"
-             android:onClick="viewNotes"
-             android:text="View Notes" />-->
 
 </LinearLayout>
