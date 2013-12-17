@@ -95,7 +95,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
     }
 
     public void registerNFC(){
-        adapter.enableForegroundDispatch(this, pi, null, techList);
+        adapter.enableForegroundDispatch(this, pi, intentFiltersArray, techList);
     }
 
     public void unregisterNFC(){
@@ -113,7 +113,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (adapter.isEnabled()) {
+        if (adapter!=null && adapter.isEnabled()) {
             unregisterNFC();
         }
     }
