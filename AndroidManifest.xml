@@ -15,7 +15,7 @@
     <application
             android:icon="@drawable/logo"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            android:theme="@style/TransparentTheme">
         <activity
                 android:name=".view.CryptoNFCHomeActivity"
                 android:label="@string/app_name" >
