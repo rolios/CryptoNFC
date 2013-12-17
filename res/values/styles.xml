@@ -9,4 +9,8 @@
         <item name="android:background">#001</item>-->
     </style>
 
+    <style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
 </resources>

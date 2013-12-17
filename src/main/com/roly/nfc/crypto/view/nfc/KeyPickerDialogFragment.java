@@ -31,4 +31,9 @@ public class KeyPickerDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().getWindow().setWindowAnimations(R.style.dialog_animation);
+    }
 }
