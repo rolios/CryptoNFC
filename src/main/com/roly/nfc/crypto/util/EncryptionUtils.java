@@ -3,16 +3,23 @@ package com.roly.nfc.crypto.util;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import android.util.Base64;
 
 public class EncryptionUtils {
+
+    public static SecretKey generateKey() throws NoSuchAlgorithmException {
+        SecretKey key;
+        KeyGenerator generator = KeyGenerator.getInstance("DES");
+        key = generator.generateKey();
+        return key;
+    }
 
     public static String encrypt(SecretKey key, String stringToEncrypt) throws BadPaddingException,
             IllegalBlockSizeException,
