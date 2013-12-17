@@ -26,7 +26,7 @@ import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
 import com.roly.nfc.crypto.util.EncryptionUtils;
-import com.roly.nfc.crypto.view.nfc.KeyPickerActivity;
+import com.roly.nfc.crypto.view.nfc.KeyPickerDialogFragment;
 
 public class NoteListActivity extends ListActivity{
 
@@ -70,8 +70,8 @@ public class NoteListActivity extends ListActivity{
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		this.mSelected=id;
-		Intent i = new Intent(this, KeyPickerActivity.class);
-		this.startActivityForResult(i, KeyPickerActivity.KEY_RETRIEVED);
+		Intent i = new Intent(this, KeyPickerDialogFragment.class);
+		this.startActivityForResult(i, KeyPickerDialogFragment.KEY_RETRIEVED);
 	}
 
 
@@ -79,7 +79,7 @@ public class NoteListActivity extends ListActivity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
-		case KeyPickerActivity.KEY_RETRIEVED:
+		case KeyPickerDialogFragment.KEY_RETRIEVED:
 			SecretKey key = new SecretKeySpec(data.getByteArrayExtra("key"), "DES");
 
 			Uri noteUri = ContentUris.withAppendedId(NoteProvider.CONTENT_URI, mSelected);
@@ -108,6 +108,63 @@ public class NoteListActivity extends ListActivity{
 			break;
 		}
 	}
+
+
+    /*    protected void setForegroundListener() {
+        adapter = NfcAdapter.getDefaultAdapter(this);
+        pi = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+        IntentFilter old_ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        old_ndef.addDataScheme("vnd.android.nfc");
+        old_ndef.addDataAuthority("ext", null);
+        old_ndef.addDataPath("/CryptoNFCKey", PatternMatcher.PATTERN_PREFIX);
+
+        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        ndef.addDataScheme("vnd.android.nfc");
+        ndef.addDataAuthority("ext", null);
+        ndef.addDataPath("/r0ly.fr:CryptoNFCKey",PatternMatcher.PATTERN_PREFIX);
+
+        intentFiltersArray = new IntentFilter[] {old_ndef, ndef};
+    }*/
+/*
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED) || intent.getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)){
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            String[] tagTechs = tag.getTechList();
+            if(Arrays.asList(tagTechs).contains(Ndef.class.getName())){
+                handle(intent);
+            }else if(Arrays.asList(tagTechs).contains(NdefFormatable.class.getName())){
+                //handle(intent);
+            }else{
+                Toast.makeText(this, "Tag not supported", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void handle(Intent i){
+        // On récupère les NdefMessage contenus dans le tag
+        NdefMessage[] msgs= NfcUtils.getNdefMessages(i);
+        // On récupère les NdefRecords dans chaque NdefMessage
+        NdefRecord[][] records= NfcUtils.getNdefRecords(msgs);
+        // Le payload d'un NdefRecord est le contenu recherché
+        byte[] payload=records[0][0].getPayload();
+
+        int keyLength = payload[0] & 0077;
+        byte[] key = new byte[keyLength];
+        try{
+            System.arraycopy(payload, 1, key, 0, keyLength);
+        }catch (ArrayIndexOutOfBoundsException e) {
+            setResult(KEY_NOT_RETRIEVED);
+            finish();
+        }
+
+        Intent data = new Intent();
+        data.putExtra("key", key);
+        setResult(KEY_RETRIEVED, data);
+        finish();
+    }*/
 
 	private class CustomAdapter extends CursorAdapter{
 		private final LayoutInflater mInflater;

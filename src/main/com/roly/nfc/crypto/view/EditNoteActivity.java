@@ -15,7 +15,7 @@ import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
 import com.roly.nfc.crypto.util.EncryptionUtils;
-import com.roly.nfc.crypto.view.nfc.KeyPickerActivity;
+import com.roly.nfc.crypto.view.nfc.KeyPickerDialogFragment;
 
 public class EditNoteActivity extends Activity{
 	
@@ -35,7 +35,7 @@ public class EditNoteActivity extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
 		
-		case KeyPickerActivity.KEY_RETRIEVED:
+		case KeyPickerDialogFragment.KEY_RETRIEVED:
 			SecretKey key = new SecretKeySpec(data.getByteArrayExtra("key"), "DES");
 			
 			String content = mContent.getText().toString();
@@ -55,7 +55,7 @@ public class EditNoteActivity extends Activity{
 			setResult(CryptoNFCHomeActivity.NOTE_VALIDATED);
 			finish();
 			break;
-		case KeyPickerActivity.KEY_NOT_RETRIEVED:
+		case KeyPickerDialogFragment.KEY_NOT_RETRIEVED:
 			Toast.makeText(this, "The tag you are using is not well formatted.", Toast.LENGTH_LONG).show();
 			break;
 		default:
@@ -69,8 +69,8 @@ public class EditNoteActivity extends Activity{
 		else if(mContent.getText().length()<1)
 			Toast.makeText(this, "Invalid content!", Toast.LENGTH_LONG).show();
 		else{
-			Intent i = new Intent(this, KeyPickerActivity.class);
-			startActivityForResult(i, KeyPickerActivity.KEY_RETRIEVED);
+			Intent i = new Intent(this, KeyPickerDialogFragment.class);
+			startActivityForResult(i, KeyPickerDialogFragment.KEY_RETRIEVED);
 		}	
 	}
 }
