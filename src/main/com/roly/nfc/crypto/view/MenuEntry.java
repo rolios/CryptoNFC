@@ -2,7 +2,6 @@ package com.roly.nfc.crypto.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.roly.nfc.crypto.R;
+import com.roly.nfc.crypto.util.ColorUtils;
 
 public class MenuEntry extends FrameLayout{
 
@@ -32,18 +32,12 @@ public class MenuEntry extends FrameLayout{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.menu_entry, this, true);
 
+        int colorSelected = ColorUtils.darken(background, (float) 0.5);
         StateListDrawable stateListDrawable = new StateListDrawable();
-        ColorDrawable colorPressed = new ColorDrawable(Color.parseColor("#2c3e50"));
-        stateListDrawable.addState(new int[]{android.R.attr.state_focused}, colorPressed);
-        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, colorPressed);
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(colorSelected));
         stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(background));
 
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            setBackgroundDrawable(stateListDrawable);
-        } else {
-            setBackground(stateListDrawable);
-        }
+        setBackgroundDrawable(stateListDrawable);
 
         ImageView image = (ImageView) view.findViewById(R.id.menu_entry_image);
         image.setImageDrawable(drawable);
