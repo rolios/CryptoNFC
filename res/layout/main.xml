@@ -9,11 +9,11 @@
         >
 
     <com.roly.nfc.crypto.view.MenuEntry
-            android:id="@+id/menu_list_notes"
+            android:id="@+id/menu_view_notes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".45"
-            android:layout_marginBottom="5dp"
+            android:layout_weight=".5"
+            android:layout_marginBottom="4dp"
             custom:label="View notes"
             custom:imageSrc="@drawable/notelist"
             custom:backgroundColor="#3498db"
@@ -29,7 +29,7 @@
                 android:id="@+id/menu_write_key"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".55"
+                android:layout_weight=".5"
                 custom:label="New key"
                 custom:imageSrc="@drawable/tag"
                 custom:backgroundColor="#e74c3c"
@@ -37,10 +37,10 @@
                 />
 
         <com.roly.nfc.crypto.view.MenuEntry
-                android:id="@+id/menu_source_code"
+                android:id="@+id/menu_get_code"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".45"
+                android:layout_weight=".5"
                 android:layout_marginLeft="2dp"
                 custom:label="Get code!"
                 custom:imageSrc="@drawable/code"
@@ -51,10 +51,10 @@
 
     <com.roly.nfc.crypto.view.MenuEntry
             android:id="@+id/menu_add_note"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".30"
+            android:layout_weight=".25"
             custom:label="Add Note"
             custom:imageSrc="@drawable/addnote"
             custom:backgroundColor="#e67e22"
