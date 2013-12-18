@@ -6,6 +6,7 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="#000"
+        android:paddingTop="4dp"
         >
 
     <com.roly.nfc.crypto.view.MenuEntry
