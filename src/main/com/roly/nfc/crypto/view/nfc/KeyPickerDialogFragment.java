@@ -22,7 +22,6 @@ public class KeyPickerDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.tag_handler, null);
 
         builder.setView(view)
-                .setTitle("New key")
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         getDialog().cancel();
