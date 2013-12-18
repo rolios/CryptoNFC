@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.OptionsItem;
@@ -75,20 +76,21 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
         startActivity(intent);
     }
 
+    @AfterViews
+    public void init(){
+        dialogFragment = new KeyPickerDialogFragment(){
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                super.onCancel(dialog);
+                unregisterNFC();
+            }
+        };
+        setForegroundListener();
+        adapter = NfcAdapter.getDefaultAdapter(this);
+    }
+
     @Click(R.id.menu_write_key)
 	public void writeKey(){
-        if(dialogFragment == null){
-
-            dialogFragment = new KeyPickerDialogFragment(){
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    super.onCancel(dialog);
-                    unregisterNFC();
-                }
-            };
-
-            setForegroundListener();
-        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         dialogFragment.show(fragmentManager, "Key Picker");
         registerNFC();
@@ -105,7 +107,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (dialogFragment!=null && dialogFragment.isVisible()) {
+        if (dialogFragment.isVisible()) {
             registerNFC();
         }
     }
@@ -113,7 +115,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (adapter!=null && adapter.isEnabled()) {
+        if (adapter.isEnabled()) {
             unregisterNFC();
         }
     }
@@ -140,7 +142,6 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
 	}
 
     private void setForegroundListener() {
-        adapter = NfcAdapter.getDefaultAdapter(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean handleFormatable = preferences.getBoolean("format_ndef_formatable_tags", false);
 
