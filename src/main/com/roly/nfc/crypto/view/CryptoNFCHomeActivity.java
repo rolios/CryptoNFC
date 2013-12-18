@@ -28,10 +28,12 @@ import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.util.EncryptionUtils;
 import com.roly.nfc.crypto.util.NfcTagUtils;
@@ -179,12 +181,13 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
         }
     }
 
-    private void writeKeyOnTag(Tag tag, boolean formatNeeded) {
+    @Background
+    public void writeKeyOnTag(Tag tag, boolean formatNeeded) {
         SecretKey key;
         try {
             key = EncryptionUtils.generateKey();
         } catch (NoSuchAlgorithmException e) {
-            //finishOnError(e);
+            error("An error occured while generating a key");
             return;
         }
 
@@ -206,7 +209,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
                 formatable.connect();
                 formatable.format(message);
             } catch (IOException | FormatException e) {
-                //finishOnError(e);
+                error("An error occured while formatting your tag");
                 return;
             } finally{
                 try {
@@ -221,7 +224,8 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
                 ndef.connect();
                 ndef.writeNdefMessage(message);
             } catch (IOException | FormatException e) {
-                //finishOnError(e);
+                error("An error occured while writing key on tag");
+                return;
             } finally{
                 try {
                     ndef.close();
@@ -230,9 +234,19 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
                 }
             }
         }
-        //setResult(CryptoNFCHomeActivity.TAG_VALIDATED);
-        //finish();
+        success();
     }
 
+    @UiThread
+    public void success() {
+        Toast.makeText(this, "A new key has been written on your tag!", Toast.LENGTH_LONG).show();
+        dialogFragment.dismiss();
+    }
+
+    @UiThread
+    public void error(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        dialogFragment.dismiss();
+    }
 
 }
