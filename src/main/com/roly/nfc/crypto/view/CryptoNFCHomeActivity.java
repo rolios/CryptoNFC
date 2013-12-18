@@ -37,7 +37,7 @@ import com.roly.nfc.crypto.util.NfcTagUtils;
 import com.roly.nfc.crypto.util.NfcUtils;
 import com.roly.nfc.crypto.view.nfc.KeyPickerDialogFragment;
 
-@EActivity(R.layout.main)
+@EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.cryptonfc_menu)
 public class CryptoNFCHomeActivity extends FragmentActivity {
 
@@ -59,7 +59,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
 
     @Click(R.id.menu_add_note)
 	public void addNote(){
-		Intent i = new Intent(this,EditNoteActivity.class);
+		Intent i = new Intent(this,EditNoteActivity_.class);
 		startActivityForResult(i, NOTE_VALIDATED);
 	}
 

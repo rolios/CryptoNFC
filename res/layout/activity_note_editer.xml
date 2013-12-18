@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#000"
+              android:orientation="vertical"
+              android:paddingTop="4dp"
+        >
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#e74c3c"
+            >
+
+        <TextView
+                android:id="@+id/title_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Title"
+                android:padding="4dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:background="#55000000"
+                />
+
+        <EditText
+                android:id="@+id/title"
+                android:padding="10dp"
+                android:layout_below="@id/title_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:background="@null"
+                android:inputType="textAutoComplete"
+                android:layout_centerInParent="true"
+                />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#27ae60"
+            android:layout_weight="1"
+            >
+
+        <TextView
+                android:id="@+id/content_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Content"
+                android:padding="4dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:background="#55000000"
+                />
+
+
+        <com.roly.nfc.crypto.view.LineEditText
+                android:id="@+id/content"
+                android:padding="10dp"
+                android:layout_below="@id/content_label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="top|left"
+                android:inputType="textMultiLine|textAutoComplete"
+                android:layout_centerInParent="true"
+                />
+    </RelativeLayout>
+
+</LinearLayout>
