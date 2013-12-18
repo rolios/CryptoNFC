@@ -188,9 +188,14 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
             return;
         }
 
-        NdefRecord[] records = new NdefRecord[2];
-        records[0] = NfcUtils.createRecord(key.getEncoded());
-        NfcTagUtils.writeApplicationRecordIfPossible(records[1]);
+        NdefRecord[] records;
+        NdefRecord keyRecord = NfcUtils.createRecord(key.getEncoded());
+        NdefRecord appRecord = NfcTagUtils.writeApplicationRecordIfPossible();
+        if(appRecord != null){
+            records = new NdefRecord[]{keyRecord, appRecord};
+        } else {
+            records = new NdefRecord[]{keyRecord};
+        }
 
         NdefMessage message = new NdefMessage(records);
 
@@ -211,7 +216,6 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
                 }
             }
         }else{
-            // On envoie ainsi le NdefMessage vers le tag pour écrire le contenu du tag
             Ndef ndef = Ndef.get(tag);
             try {
                 ndef.connect();
