@@ -26,6 +26,16 @@ public class NfcUtils {
     }
 
     /**
+     * Récupère la liste des NdefRecords contenus dans chaque NdefMessages
+     */
+    public static NdefRecord[] getNdefRecords(NdefMessage ndef) {
+        if(ndef!=null){
+            return ndef.getRecords();
+        }
+        return null;
+    }
+
+    /**
      *  Récupère la lise des NdefMessages contenus dans le tag
      */
     public static NdefMessage[] getNdefMessages(Intent intent){

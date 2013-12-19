@@ -1,6 +1,7 @@
 package com.roly.nfc.crypto.view;
 
-import java.util.Arrays;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -9,11 +10,11 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.Ndef;
+import android.os.Parcelable;
 import android.os.PatternMatcher;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,9 +22,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
@@ -48,6 +51,9 @@ public class EditNoteActivity extends FragmentActivity{
     private PendingIntent pi;
     private String[][] techList;
 
+    private String contentValue;
+    private String titleValue;
+
     @OptionsItem(R.id.save_note)
     public void saveNote(){
         if(title.getText().length()<1)
@@ -55,6 +61,9 @@ public class EditNoteActivity extends FragmentActivity{
         else if(content.getText().length()<1)
             Toast.makeText(this, "Invalid content", Toast.LENGTH_LONG).show();
         else{
+            contentValue = content.getText().toString();
+            titleValue = title.getText().toString();
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             dialogFragment.show(fragmentManager, "KeyPicker");
             registerNFC();
@@ -82,39 +91,6 @@ public class EditNoteActivity extends FragmentActivity{
         adapter.disableForegroundDispatch(this);
     }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (resultCode) {
-
-		case KeyPickerDialogFragment.KEY_RETRIEVED:
-			SecretKey key = new SecretKeySpec(data.getByteArrayExtra("key"), "DES");
-
-			String content = this.content.getText().toString();
-
-			try {
-				content = EncryptionUtils.encrypt(key, content);
-			} catch (Exception e) {
-				setResult(CryptoNFCHomeActivity.NOTE_ERROR);
-				finish();
-			}
-
-			ContentValues values = new ContentValues(2);
-			values.put(NoteDatabase.KEY_TITLE, title.getText().toString());
-			values.put(NoteDatabase.KEY_BODY, content);
-			getContentResolver().insert(NoteProvider.CONTENT_URI, values);
-
-			setResult(CryptoNFCHomeActivity.NOTE_VALIDATED);
-			finish();
-			break;
-		case KeyPickerDialogFragment.KEY_NOT_RETRIEVED:
-			Toast.makeText(this, "The tag you are using is not well formatted.", Toast.LENGTH_LONG).show();
-			break;
-		default:
-			break;
-		}
-	}
-
     protected void setForegroundListener() {
         adapter = NfcAdapter.getDefaultAdapter(this);
         pi = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -135,38 +111,62 @@ public class EditNoteActivity extends FragmentActivity{
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED) || intent.getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)){
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            String[] tagTechs = tag.getTechList();
-            if(Arrays.asList(tagTechs).contains(Ndef.class.getName())){
-                handle(intent);
-            }else{
-                Toast.makeText(this, "Tag not supported", Toast.LENGTH_LONG).show();
+        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
+            Parcelable[] messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if(messages.length == 0){
+                error("The tag you are using doesn't contains any inforations");
+                return;
             }
+            extractKey(messages);
         }
     }
 
-    private void handle(Intent i){
-        // On récupère les NdefMessage contenus dans le tag
-        NdefMessage[] msgs= NfcUtils.getNdefMessages(i);
-        // On récupère les NdefRecords dans chaque NdefMessage
-        NdefRecord[][] records= NfcUtils.getNdefRecords(msgs);
-        // Le payload d'un NdefRecord est le contenu recherché
-        byte[] payload=records[0][0].getPayload();
+    @Background
+    public void extractKey(Parcelable[] messages){
+        NdefMessage ndef = (NdefMessage) messages[0];
+        NdefRecord[] records= NfcUtils.getNdefRecords(ndef);
+        byte[] payload=records[0].getPayload();
 
         int keyLength = payload[0] & 0077;
-        byte[] key = new byte[keyLength];
+        byte[] keyData = new byte[keyLength];
         try{
-            System.arraycopy(payload, 1, key, 0, keyLength);
+            System.arraycopy(payload, 1, keyData, 0, keyLength);
         }catch (ArrayIndexOutOfBoundsException e) {
-            //setResult(KEY_NOT_RETRIEVED);
-            finish();
+            error("An error occured while reading key on your tag");
+            return;
         }
 
-        Intent data = new Intent();
-        data.putExtra("key", key);
-        //setResult(KEY_RETRIEVED, data);
-        finish();
+        SecretKey key = new SecretKeySpec(keyData, "DES");
+        String encrypted;
+        try {
+            encrypted = EncryptionUtils.encrypt(key, contentValue);
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+            error("An error occured while encrypting text content");
+            return;
+        }
+
+        ContentValues values = new ContentValues(2);
+        values.put(NoteDatabase.KEY_TITLE, titleValue);
+        values.put(NoteDatabase.KEY_BODY, encrypted);
+        Uri insert = getContentResolver().insert(NoteProvider.CONTENT_URI, values);
+        if(insert != null){
+            success(encrypted);
+        } else {
+            error("An error occured while saving note");
+        }
+    }
+
+    @UiThread
+    public void success(String encrypted) {
+        Toast.makeText(this, "The note has been encrypted and saved.", Toast.LENGTH_LONG).show();
+        dialogFragment.dismiss();
+        content.setText(encrypted);
+    }
+
+    @UiThread
+    public void error(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        dialogFragment.dismiss();
     }
 
 }
