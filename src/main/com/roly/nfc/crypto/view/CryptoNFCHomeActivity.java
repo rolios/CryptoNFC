@@ -122,27 +122,6 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
         }
     }
 
-    @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (resultCode) {
-		case NOTE_VALIDATED:
-			Toast.makeText(this,"Note saved", Toast.LENGTH_SHORT).show();
-			break;
-		case TAG_VALIDATED:
-			Toast.makeText(this,"Tag written", Toast.LENGTH_SHORT).show();
-			break;
-		case TAG_ERROR:
-			Toast.makeText(this, "An error occured while writing key on tag", Toast.LENGTH_SHORT).show();
-			break;
-		case NOTE_ERROR:
-			Toast.makeText(this, "An error occured while saving note", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			break;
-		}
-	}
-
     private void setForegroundListener() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean handleFormatable = preferences.getBoolean("format_ndef_formatable_tags", false);
