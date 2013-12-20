@@ -27,7 +27,7 @@
         </activity>
         <activity android:name=".view.EditNoteActivity_" >
         </activity>
-        <activity android:name=".view.NoteListActivity" >
+        <activity android:name=".view.NoteListActivity_" >
         </activity>
 
         <provider

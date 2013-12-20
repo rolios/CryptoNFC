@@ -68,7 +68,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
 
     @Click(R.id.menu_view_notes)
 	public void viewNotes(){
-		Intent i = new Intent(this,NoteListActivity.class);
+		Intent i = new Intent(this,NoteListActivity_.class);
 		startActivity(i);
 	}
 

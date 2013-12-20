@@ -1,44 +1,26 @@
 package com.roly.nfc.crypto.view;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
+import android.support.v4.app.FragmentActivity;
 
-import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.googlecode.androidannotations.annotations.EActivity;
 import com.roly.nfc.crypto.R;
-import com.roly.nfc.crypto.data.NoteDatabase;
-import com.roly.nfc.crypto.data.NoteProvider;
-import com.roly.nfc.crypto.util.EncryptionUtils;
-import com.roly.nfc.crypto.view.nfc.KeyPickerDialogFragment;
 
-public class NoteListActivity extends ListActivity{
+@EActivity(R.layout.activity_note_list)
+public class NoteListActivity extends FragmentActivity{
 
-	private long mSelected;
-	private AlertDialog mAlert;
-
-	@Override
+/*
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setTitle("Select note to decipher");
-		Cursor mCursor = getContentResolver().query(NoteProvider.CONTENT_URI, null, null, null, null);
-		this.setListAdapter(new CustomAdapter(this,mCursor));
+		//setTitle("Select note to decipher");
+*//*        adapter = new LoanListItemAdapter(getActivity(), null);
+        setListAdapter(adapter);*//*
+        setEmptyText("No loans for the moment!\n Click on the \u2295 button to add one.");
+        setListShown(false);
+        getLoaderManager().initLoader(0, null, this);
+
+        Cursor mCursor = getContentResolver().query(NoteProvider.CONTENT_URI, null, null, null, null);
+		setListAdapter(new CustomAdapter(this, mCursor));
 
 		final CharSequence[] options = {"Delete"};
 
@@ -109,6 +91,21 @@ public class NoteListActivity extends ListActivity{
 		}
 	}
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }*/
+
 
     /*    protected void setForegroundListener() {
         adapter = NfcAdapter.getDefaultAdapter(this);
@@ -165,7 +162,7 @@ public class NoteListActivity extends ListActivity{
         setResult(KEY_RETRIEVED, data);
         finish();
     }*/
-
+/*
 	private class CustomAdapter extends CursorAdapter{
 		private final LayoutInflater mInflater;
 
@@ -188,5 +185,5 @@ public class NoteListActivity extends ListActivity{
 			final View view = mInflater.inflate(R.layout.note_item, parent, false);
 			return view;
 		}
-	}
+	}*/
 }
