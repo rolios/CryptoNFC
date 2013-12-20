@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view;
+package com.roly.nfc.crypto.ui.activity;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -33,7 +33,7 @@ import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
 import com.roly.nfc.crypto.util.EncryptionUtils;
 import com.roly.nfc.crypto.util.NfcUtils;
-import com.roly.nfc.crypto.view.nfc.KeyPickerDialogFragment;
+import com.roly.nfc.crypto.ui.fragment.KeyPickerDialogFragment;
 
 @EActivity(R.layout.activity_note_editer)
 @OptionsMenu(R.menu.cryptonfc_addnote_action)

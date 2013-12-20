@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view;
+package com.roly.nfc.crypto.ui.fragment;
 
 import android.content.res.Resources;
 import android.database.Cursor;

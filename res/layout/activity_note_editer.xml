@@ -61,7 +61,7 @@
                 />
 
 
-        <com.roly.nfc.crypto.view.LineEditText
+        <com.roly.nfc.crypto.ui.view.LineEditText
                 android:id="@+id/content"
                 android:padding="10dp"
                 android:layout_below="@id/content_label"

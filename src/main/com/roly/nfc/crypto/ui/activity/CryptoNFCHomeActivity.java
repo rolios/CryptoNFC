@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view;
+package com.roly.nfc.crypto.ui.activity;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -35,10 +35,10 @@ import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.roly.nfc.crypto.R;
+import com.roly.nfc.crypto.ui.fragment.KeyPickerDialogFragment;
 import com.roly.nfc.crypto.util.EncryptionUtils;
 import com.roly.nfc.crypto.util.NfcTagUtils;
 import com.roly.nfc.crypto.util.NfcUtils;
-import com.roly.nfc.crypto.view.nfc.KeyPickerDialogFragment;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.cryptonfc_menu)

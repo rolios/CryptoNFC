@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view;
+package com.roly.nfc.crypto.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

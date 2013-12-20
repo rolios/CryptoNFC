@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view.nfc;
+package com.roly.nfc.crypto.ui.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

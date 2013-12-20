@@ -9,7 +9,7 @@
         android:paddingTop="4dp"
         >
 
-    <com.roly.nfc.crypto.view.MenuEntry
+    <com.roly.nfc.crypto.ui.view.MenuEntry
             android:id="@+id/menu_view_notes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -26,7 +26,7 @@
             android:layout_weight=".25"
             android:orientation="horizontal">
 
-        <com.roly.nfc.crypto.view.MenuEntry
+        <com.roly.nfc.crypto.ui.view.MenuEntry
                 android:id="@+id/menu_write_key"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_marginRight="2dp"
                 />
 
-        <com.roly.nfc.crypto.view.MenuEntry
+        <com.roly.nfc.crypto.ui.view.MenuEntry
                 android:id="@+id/menu_get_code"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -50,7 +50,7 @@
 
     </LinearLayout>
 
-    <com.roly.nfc.crypto.view.MenuEntry
+    <com.roly.nfc.crypto.ui.view.MenuEntry
             android:id="@+id/menu_add_note"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"

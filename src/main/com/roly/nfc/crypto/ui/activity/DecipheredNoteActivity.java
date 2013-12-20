@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view;
+package com.roly.nfc.crypto.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

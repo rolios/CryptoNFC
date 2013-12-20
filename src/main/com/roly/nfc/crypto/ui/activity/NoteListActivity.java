@@ -1,4 +1,4 @@
-package com.roly.nfc.crypto.view;
+package com.roly.nfc.crypto.ui.activity;
 
 import android.support.v4.app.FragmentActivity;
 
@@ -172,18 +172,18 @@ public class NoteListActivity extends FragmentActivity{
 		}
 
 		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			TextView t = (TextView) view.findViewById(R.id.title_item);
+		public void bindView(View ui, Context context, Cursor cursor) {
+			TextView t = (TextView) ui.findViewById(R.id.title_item);
 			t.setText(cursor.getString(cursor.getColumnIndex(NoteDatabase.KEY_TITLE)));
 
-			t = (TextView) view.findViewById(R.id.content_item);
+			t = (TextView) ui.findViewById(R.id.content_item);
 			t.setText(cursor.getString(cursor.getColumnIndex(NoteDatabase.KEY_BODY)));
 		}
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			final View view = mInflater.inflate(R.layout.note_item, parent, false);
-			return view;
+			final View ui = mInflater.inflate(R.layout.note_item, parent, false);
+			return ui;
 		}
 	}*/
 }
