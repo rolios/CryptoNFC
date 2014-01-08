@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity {
 
     @Click(R.id.menu_get_code)
     public void getCode(){
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/OlivierGonthier/"));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/OlivierGonthier/CryptoNFC"));
         startActivity(intent);
     }
 
