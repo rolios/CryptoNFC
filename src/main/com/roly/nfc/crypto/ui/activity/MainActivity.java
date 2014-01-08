@@ -44,11 +44,6 @@ import com.roly.nfc.crypto.util.NfcUtils;
 @OptionsMenu(R.menu.cryptonfc_menu)
 public class MainActivity extends FragmentActivity {
 
-	public static final int TAG_ERROR=-2;
-	public static final int NOTE_ERROR=-1;
-	public static final int NOTE_VALIDATED=1;
-	public static final int TAG_VALIDATED=2;
-
     private IntentFilter[] intentFiltersArray;
     private PendingIntent pi;
     private String[][] techList;
@@ -63,7 +58,7 @@ public class MainActivity extends FragmentActivity {
     @Click(R.id.menu_add_note)
 	public void addNote(){
 		Intent i = new Intent(this,EditNoteActivity_.class);
-		startActivityForResult(i, NOTE_VALIDATED);
+		startActivity(i);
 	}
 
     @Click(R.id.menu_view_notes)

@@ -12,8 +12,7 @@ import com.roly.nfc.crypto.R;
 
 public class KeyPickerDialogFragment extends DialogFragment {
 
-    public static final int KEY_NOT_RETRIEVED=-1;
-    public static final int KEY_RETRIEVED=1;
+    public KeyPickerDialogFragment(){};
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
