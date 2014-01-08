@@ -3,9 +3,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="#000"
-             android:paddingTop="4dp"
+             android:background="#BBB"
+             android:orientation="vertical"
              >
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="#000"
+            />
 
     <fragment
             android:id="@+id/note_list_fragment"

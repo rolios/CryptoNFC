@@ -1,7 +1,6 @@
 package com.roly.nfc.crypto.ui.fragment;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -40,8 +39,6 @@ public class NoteListFragment extends ListFragment implements LoaderManager.Load
 
         ListView listView = getListView();
         listView.setDivider(null);
-        int background = Color.parseColor("#BBBBBB");
-        listView.setBackgroundColor(background);
 
         setEmptyText("You don't have any note saved for now.");
         setListShown(false);
