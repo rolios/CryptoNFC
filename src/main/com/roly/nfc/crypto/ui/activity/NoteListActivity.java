@@ -4,7 +4,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -37,13 +36,7 @@ public class NoteListActivity extends FragmentActivity{
 
     @AfterViews
     public void init(){
-        dialogFragment = new KeyPickerDialogFragment(){
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                super.onCancel(dialog);
-                unregisterNFC();
-            }
-        };
+        dialogFragment = new KeyPickerDialogFragment();
         setForegroundListener();
         adapter = NfcAdapter.getDefaultAdapter(this);
     }
@@ -60,8 +53,10 @@ public class NoteListActivity extends FragmentActivity{
         adapter.enableForegroundDispatch(this, pi, intentFiltersArray, null);
     }
 
-    private void unregisterNFC(){
-        adapter.disableForegroundDispatch(this);
+    private void unregisterNFCIfNeeded(){
+        if (adapter != null && adapter.isEnabled()) {
+            adapter.disableForegroundDispatch(this);
+        }
     }
 
     @Override
@@ -69,6 +64,8 @@ public class NoteListActivity extends FragmentActivity{
         super.onResume();
         if (dialogFragment.isVisible()) {
             registerNFC();
+        } else {
+            unregisterNFCIfNeeded();
         }
     }
 
@@ -76,7 +73,7 @@ public class NoteListActivity extends FragmentActivity{
     protected void onPause() {
         super.onPause();
         if (adapter.isEnabled()) {
-            unregisterNFC();
+            unregisterNFCIfNeeded();
         }
     }
 

@@ -12,8 +12,6 @@ import com.roly.nfc.crypto.R;
 
 public class KeyPickerDialogFragment extends DialogFragment {
 
-    public KeyPickerDialogFragment(){};
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -33,5 +31,14 @@ public class KeyPickerDialogFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         getDialog().getWindow().setWindowAnimations(R.style.dialog_animation);
+        setRetainInstance(true);
     }
+
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance())
+            getDialog().setDismissMessage(null);
+        super.onDestroyView();
+    }
+
 }

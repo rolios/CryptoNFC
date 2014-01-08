@@ -8,7 +8,6 @@ import javax.crypto.spec.SecretKeySpec;
 import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -32,9 +31,9 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
+import com.roly.nfc.crypto.ui.fragment.KeyPickerDialogFragment;
 import com.roly.nfc.crypto.util.EncryptionUtils;
 import com.roly.nfc.crypto.util.NfcUtils;
-import com.roly.nfc.crypto.ui.fragment.KeyPickerDialogFragment;
 
 @EActivity(R.layout.activity_note_editer)
 @OptionsMenu(R.menu.cryptonfc_addnote_action)
@@ -83,13 +82,7 @@ public class EditNoteActivity extends FragmentActivity{
             content.setText(contentValue);
         }
 
-        dialogFragment = new KeyPickerDialogFragment(){
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                super.onCancel(dialog);
-                unregisterNFC();
-            }
-        };
+        dialogFragment = new KeyPickerDialogFragment();
         setForegroundListener();
         adapter = NfcAdapter.getDefaultAdapter(this);
     }
@@ -98,7 +91,7 @@ public class EditNoteActivity extends FragmentActivity{
         adapter.enableForegroundDispatch(this, pi, intentFiltersArray, techList);
     }
 
-    public void unregisterNFC(){
+    public void unregisterNFCIfNeeded(){
         adapter.disableForegroundDispatch(this);
     }
 
@@ -174,6 +167,24 @@ public class EditNoteActivity extends FragmentActivity{
             success(encrypted);
         } else {
             error("An error occured while saving note");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (dialogFragment.isVisible()) {
+            registerNFC();
+        } else {
+            unregisterNFCIfNeeded();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (adapter.isEnabled()) {
+            unregisterNFCIfNeeded();
         }
     }
 
