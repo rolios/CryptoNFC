@@ -6,6 +6,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,6 +54,7 @@ public class EditNoteActivity extends FragmentActivity{
 
     private String contentValue;
     private String titleValue;
+    private long id;
 
     @OptionsItem(R.id.save_note)
     public void saveNote(){
@@ -72,6 +74,15 @@ public class EditNoteActivity extends FragmentActivity{
 
     @AfterViews
     public void init(){
+        Intent intent = getIntent();
+        id = intent.getLongExtra("id", -1);
+        if (id > -1) {
+            titleValue = intent.getStringExtra("title");
+            contentValue = intent.getStringExtra("content");
+            title.setText(titleValue);
+            content.setText(contentValue);
+        }
+
         dialogFragment = new KeyPickerDialogFragment(){
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -148,8 +159,18 @@ public class EditNoteActivity extends FragmentActivity{
         ContentValues values = new ContentValues(2);
         values.put(NoteDatabase.KEY_TITLE, titleValue);
         values.put(NoteDatabase.KEY_BODY, encrypted);
-        Uri insert = getContentResolver().insert(NoteProvider.CONTENT_URI, values);
-        if(insert != null){
+        Uri uri = NoteProvider.CONTENT_URI;
+        Uri insertUri = null;
+        int update = 0;
+        if (id > -1) {
+            uri = ContentUris.withAppendedId(uri, id);
+            update = getContentResolver().update(uri, values, null, null);
+        } else {
+            insertUri = getContentResolver().insert(uri, values);
+            id = ContentUris.parseId(insertUri);
+        }
+
+        if(insertUri != null || update > 0){
             success(encrypted);
         } else {
             error("An error occured while saving note");

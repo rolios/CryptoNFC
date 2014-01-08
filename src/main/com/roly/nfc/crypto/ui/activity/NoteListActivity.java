@@ -1,113 +1,86 @@
 package com.roly.nfc.crypto.ui.activity;
 
-import android.support.v4.app.FragmentActivity;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
+import android.app.PendingIntent;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.os.PatternMatcher;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
+
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.roly.nfc.crypto.R;
+import com.roly.nfc.crypto.ui.fragment.KeyPickerDialogFragment;
+import com.roly.nfc.crypto.util.EncryptionUtils;
+import com.roly.nfc.crypto.util.NfcUtils;
 
 @EActivity(R.layout.activity_note_list)
 public class NoteListActivity extends FragmentActivity{
 
-/*
-    @Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		//setTitle("Select note to decipher");
-*//*        adapter = new LoanListItemAdapter(getActivity(), null);
-        setListAdapter(adapter);*//*
-        setEmptyText("No loans for the moment!\n Click on the \u2295 button to add one.");
-        setListShown(false);
-        getLoaderManager().initLoader(0, null, this);
+    private IntentFilter[] intentFiltersArray;
+    private PendingIntent pi;
+    private NfcAdapter adapter;
+    private KeyPickerDialogFragment dialogFragment;
+    private long selectedId;
+    private String selectedTitle;
+    private String selectedContent;
+    private String content;
 
-        Cursor mCursor = getContentResolver().query(NoteProvider.CONTENT_URI, null, null, null, null);
-		setListAdapter(new CustomAdapter(this, mCursor));
+    @AfterViews
+    public void init(){
+        dialogFragment = new KeyPickerDialogFragment(){
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                super.onCancel(dialog);
+                unregisterNFC();
+            }
+        };
+        setForegroundListener();
+        adapter = NfcAdapter.getDefaultAdapter(this);
+    }
 
-		final CharSequence[] options = {"Delete"};
+    public void askTag(long id, String title, String content){
+        selectedId = id;
+        selectedTitle = title;
+        selectedContent = content;
+        registerNFC();
+        dialogFragment.show(getSupportFragmentManager(), "Key picker");
+    }
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Select an action");
-		builder.setItems(options, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int item) {
-				Uri noteUri = ContentUris.withAppendedId(NoteProvider.CONTENT_URI, mSelected);
-				getContentResolver().delete(noteUri, null, null);
-			}
-		});
-		mAlert = builder.create();
+    private void registerNFC(){
+        adapter.enableForegroundDispatch(this, pi, intentFiltersArray, null);
+    }
 
-		ListView list = getListView();
-		list.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View v,
-					int position, long id) {
-				mSelected=id;
-				mAlert.show();
-				return false;
-			}
-		});
-
-	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		this.mSelected=id;
-		Intent i = new Intent(this, KeyPickerDialogFragment.class);
-		this.startActivityForResult(i, KeyPickerDialogFragment.KEY_RETRIEVED);
-	}
-
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (resultCode) {
-		case KeyPickerDialogFragment.KEY_RETRIEVED:
-			SecretKey key = new SecretKeySpec(data.getByteArrayExtra("key"), "DES");
-
-			Uri noteUri = ContentUris.withAppendedId(NoteProvider.CONTENT_URI, mSelected);
-			Cursor cursor = getContentResolver().query(noteUri, null, null, null, null);
-			if(!cursor.moveToFirst()){
-				Toast.makeText(this, "An error occured while retrieving data.", Toast.LENGTH_LONG).show();
-				return;
-			}
-			String content = cursor.getString(NoteDatabase.BODY_COLUMN);
-			String title = cursor.getString(NoteDatabase.TITLE_COLUMN);
-
-			try{
-				content = EncryptionUtils.decrypt(key, content);
-			}catch(Exception e){
-				Toast.makeText(this, "This is not the right tagkey. Can't decipher this note.", Toast.LENGTH_LONG).show();
-				return;
-			}
-
-			Intent i=new Intent(this, DecipheredNoteActivity.class);
-			i.putExtra("title", title);
-			i.putExtra("content", content);
-			this.startActivity(i);
-
-			break;
-		default:
-			break;
-		}
-	}
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+    private void unregisterNFC(){
+        adapter.disableForegroundDispatch(this);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+    protected void onResume() {
+        super.onResume();
+        if (dialogFragment.isVisible()) {
+            registerNFC();
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    protected void onPause() {
+        super.onPause();
+        if (adapter.isEnabled()) {
+            unregisterNFC();
+        }
+    }
 
-    }*/
-
-
-    /*    protected void setForegroundListener() {
+    private void setForegroundListener() {
         adapter = NfcAdapter.getDefaultAdapter(this);
         pi = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
@@ -122,68 +95,57 @@ public class NoteListActivity extends FragmentActivity{
         ndef.addDataPath("/r0ly.fr:CryptoNFCKey",PatternMatcher.PATTERN_PREFIX);
 
         intentFiltersArray = new IntentFilter[] {old_ndef, ndef};
-    }*/
-/*
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED) || intent.getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)){
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            String[] tagTechs = tag.getTechList();
-            if(Arrays.asList(tagTechs).contains(Ndef.class.getName())){
-                handle(intent);
-            }else if(Arrays.asList(tagTechs).contains(NdefFormatable.class.getName())){
-                //handle(intent);
-            }else{
-                Toast.makeText(this, "Tag not supported", Toast.LENGTH_LONG).show();
-            }
+        if(intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)){
+            readKeyOnTag(intent);
         }
     }
 
-    private void handle(Intent i){
-        // On récupère les NdefMessage contenus dans le tag
+    @Background
+    public void readKeyOnTag(Intent i){
         NdefMessage[] msgs= NfcUtils.getNdefMessages(i);
-        // On récupère les NdefRecords dans chaque NdefMessage
         NdefRecord[][] records= NfcUtils.getNdefRecords(msgs);
-        // Le payload d'un NdefRecord est le contenu recherché
         byte[] payload=records[0][0].getPayload();
 
         int keyLength = payload[0] & 0077;
-        byte[] key = new byte[keyLength];
+        byte[] keyData = new byte[keyLength];
         try{
-            System.arraycopy(payload, 1, key, 0, keyLength);
+            System.arraycopy(payload, 1, keyData, 0, keyLength);
         }catch (ArrayIndexOutOfBoundsException e) {
-            setResult(KEY_NOT_RETRIEVED);
-            finish();
+            error("An error occured while reading your keyData");
+            return;
         }
 
-        Intent data = new Intent();
-        data.putExtra("key", key);
-        setResult(KEY_RETRIEVED, data);
-        finish();
-    }*/
-/*
-	private class CustomAdapter extends CursorAdapter{
-		private final LayoutInflater mInflater;
+        SecretKey key = new SecretKeySpec(keyData, "DES");
 
-		public CustomAdapter(Context context, Cursor cursor) {
-			super(context, cursor, true);
-			mInflater = LayoutInflater.from(context);
-		}
+        try{
+            content = EncryptionUtils.decrypt(key, selectedContent);
+        }catch(Exception e){
+            error("An error occured. Are you using the right Tag?");
+            return;
+        }
 
-		@Override
-		public void bindView(View ui, Context context, Cursor cursor) {
-			TextView t = (TextView) ui.findViewById(R.id.title_item);
-			t.setText(cursor.getString(cursor.getColumnIndex(NoteDatabase.KEY_TITLE)));
+        success();
+    }
 
-			t = (TextView) ui.findViewById(R.id.content_item);
-			t.setText(cursor.getString(cursor.getColumnIndex(NoteDatabase.KEY_BODY)));
-		}
+    @UiThread
+    public void success() {
+        dialogFragment.dismiss();
+        Intent intent = new Intent(this, EditNoteActivity_.class);
+        intent.putExtra("id", selectedId);
+        intent.putExtra("title", selectedTitle);
+        intent.putExtra("content", content);
+        startActivity(intent);
+    }
 
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			final View ui = mInflater.inflate(R.layout.note_item, parent, false);
-			return ui;
-		}
-	}*/
+    @UiThread
+    public void error(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        dialogFragment.dismiss();
+    }
+
 }

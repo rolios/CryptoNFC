@@ -8,12 +8,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
+import com.roly.nfc.crypto.ui.activity.NoteListActivity;
 
 public class NoteListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -44,6 +46,15 @@ public class NoteListFragment extends ListFragment implements LoaderManager.Load
         setEmptyText("You don't have any note saved for now.");
         setListShown(false);
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        NoteListActivity activity = (NoteListActivity) getActivity();
+        Cursor cursor = (Cursor) adapter.getItem(position);
+        String title = cursor.getString(NoteDatabase.TITLE_COLUMN);
+        String content = cursor.getString(NoteDatabase.BODY_COLUMN);
+        activity.askTag(id, title, content);
     }
 
     @Override
