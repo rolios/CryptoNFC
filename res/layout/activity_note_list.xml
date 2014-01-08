@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="#000"
              android:paddingTop="4dp"
-             android:background="#000">
+             >
 
     <fragment
             android:id="@+id/note_list_fragment"
             android:name="com.roly.nfc.crypto.ui.fragment.NoteListFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            />
 
-</FrameLayout>
+</LinearLayout>

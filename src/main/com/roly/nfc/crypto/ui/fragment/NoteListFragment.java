@@ -1,37 +1,45 @@
 package com.roly.nfc.crypto.ui.fragment;
 
-import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.appcompat.R;
-import android.util.TypedValue;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.roly.nfc.crypto.R;
 import com.roly.nfc.crypto.data.NoteDatabase;
 import com.roly.nfc.crypto.data.NoteProvider;
 
 public class NoteListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private SimpleCursorAdapter adapter;
-    private String[] projection;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        projection = new String[]{NoteDatabase.KEY_TITLE, NoteDatabase.KEY_BODY};
+        String[] from = new String[]{NoteDatabase.KEY_TITLE, NoteDatabase.KEY_BODY};
         int[] to = {R.id.note_list_item_title, R.id.note_list_item_content};
-        adapter = new SimpleCursorAdapter(getActivity(), R.layout.note_item, null, projection, to, SimpleCursorAdapter.NO_SELECTION);
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.note_item, null, from, to, SimpleCursorAdapter.NO_SELECTION){
+            @Override
+            public void setViewText(TextView v, String text) {
+                if(v.getId() == R.id.note_list_item_content && text.endsWith("\n")){
+                    text = text.substring(0, text.length() - 1);
+                }
+                super.setViewText(v, text);
+            }
+        };
         setListAdapter(adapter);
 
-        Resources r = getResources();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
-
-        getListView().setDividerHeight((int)px);
+        ListView listView = getListView();
+        listView.setDivider(null);
+        int background = Color.parseColor("#BBBBBB");
+        listView.setBackgroundColor(background);
 
         setEmptyText("You don't have any note saved for now.");
         setListShown(false);
@@ -40,8 +48,7 @@ public class NoteListFragment extends ListFragment implements LoaderManager.Load
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader loader = new CursorLoader(getActivity(), NoteProvider.CONTENT_URI, null, null, null, null);
-        return loader;
+        return new CursorLoader(getActivity(), NoteProvider.CONTENT_URI, null, null, null, null);
     }
 
     @Override
