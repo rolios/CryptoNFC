@@ -1,11 +1,10 @@
 package com.roly.nfc.crypto.ui.activity;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
 import com.roly.nfc.crypto.R;
 
-public class CryptoNFCPreferenceActivity extends PreferenceActivity {
+public class PreferencesActivity extends android.preference.PreferenceActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -42,7 +42,7 @@ import com.roly.nfc.crypto.util.NfcUtils;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.cryptonfc_menu)
-public class CryptoNFCHomeActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity {
 
 	public static final int TAG_ERROR=-2;
 	public static final int NOTE_ERROR=-1;
@@ -57,7 +57,7 @@ public class CryptoNFCHomeActivity extends FragmentActivity {
 
     @OptionsItem(R.id.settings)
 	public void viewPreferences(){
-		startActivity(new Intent(this,CryptoNFCPreferenceActivity.class));
+		startActivity(new Intent(this,PreferencesActivity.class));
 	}
 
     @Click(R.id.menu_add_note)

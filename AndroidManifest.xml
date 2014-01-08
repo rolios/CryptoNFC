@@ -17,7 +17,7 @@
             android:label="@string/app_name"
             android:theme="@style/TransparentTheme">
         <activity
-                android:name=".ui.activity.CryptoNFCHomeActivity_"
+                android:name=".ui.activity.MainActivity_"
                 android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,7 @@
                 android:authorities="com.roly.nfc.crypto.noteprovider" >
         </provider>
 
-        <activity android:name=".ui.activity.CryptoNFCPreferenceActivity" >
+        <activity android:name=".ui.activity.PreferencesActivity" >
         </activity>
         <activity android:name=".ui.activity.DecipheredNoteActivity" >
         </activity>
